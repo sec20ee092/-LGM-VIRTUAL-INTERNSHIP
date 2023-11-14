@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class ScientificCalculator {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter an expression (type 'exit' to end): ");
+            String expression = scanner.nextLine();
+
+            if (expression.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting the calculator. Goodbye!");
+                break;
+            }
+
+            try {
+                double result = evaluateExpression(expression);
+                System.out.println("Result: " + result);
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static double evaluateExpression(String expression) {
+        // Replace trigonometric functions with their actual names
+        expression = expression.replaceAll("sin", "Math.sin");
+        expression = expression.replaceAll("cos", "Math.cos");
+        expression = expression.replaceAll("tan", "Math.tan");
+
+        // Replace logarithmic functions with their actual names
+        expression = expression.replaceAll("log", "Math.log10");
+        expression = expression.replaceAll("ln", "Math.log");
+
+        // Evaluate the expression using Java's scripting engine
+        return (double) javax.script.ScriptEngineManager
+                .newInstance()
+                .getEngineByName("JavaScript")
+                .eval(expression);
+    }
+}
